@@ -8,6 +8,7 @@ exports.createPost = async (req, res) => {
         const savedPost = await newPost.save();
         res.status(201).json(savedPost);
     } catch (err) {
+        console.error("게시글 생성 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -16,9 +17,15 @@ exports.createPost = async (req, res) => {
 exports.getPosts = async (req, res) => {
     try {
         const { board } = req.query;
+
+        if (!board) {
+            return res.status(400).json({ error: 'board 쿼리 파라미터가 필요합니다.' });
+        }
+
         const posts = await Post.find({ board: board });
         res.status(200).json(posts);
     } catch (err) {
+        console.error("게시글 목록 조회 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -30,6 +37,7 @@ exports.getPostById = async (req, res) => {
         if (post) res.status(200).json(post);
         else res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
     } catch (err) {
+        console.error("특정 게시글 조회 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -41,6 +49,7 @@ exports.deletePost = async (req, res) => {
         if (deletedPost) res.status(200).json({ message: '게시글이 삭제되었습니다.' });
         else res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
     } catch (err) {
+        console.error("게시글 삭제 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -58,6 +67,7 @@ exports.toggleLike = async (req, res) => {
             res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
         }
     } catch (err) {
+        console.error("좋아요 토글 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -75,6 +85,7 @@ exports.addComment = async (req, res) => {
             res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
         }
     } catch (err) {
+        console.error("댓글 추가 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -96,18 +107,7 @@ exports.deleteComment = async (req, res) => {
             res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
         }
     } catch (err) {
+        console.error("댓글 삭제 중 오류 발생:", err);
         res.status(500).json({ error: err.message });
     }
-};
-
-
-exports.createPost = async (req, res) => {
-   try {
-       const newPost = new Post(req.body);
-       const savedPost = await newPost.save();
-       res.status(201).json(savedPost);
-   } catch (err) {
-       console.error("게시글 생성 중 오류 발생:", err); // 전체 오류 객체를 출력
-       res.status(500).json({ error: err.message });
-   }
 };

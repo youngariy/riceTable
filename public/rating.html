@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식당 평가</title>
+    <link rel="stylesheet" href="/css/rating.css">
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Gowun+Batang&family=Gowun+Dodum&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1 id="home-title" onclick="goHome()">
+            <img src="https://i.ibb.co/2q39S4Q/Kakao-Talk-20241105-184701002-removebg-preview.png" alt="밥상머리" style="border: 0;">
+            <span>밥상머리</span>
+        </h1>
+        <div class="header-content">
+            <nav>
+                <button onclick="navigateToBoard(1)">명진당</button>
+                <button onclick="navigateToBoard(2)">학생회관</button>
+                <button onclick="navigateToBoard(3)">교직원 식당</button>
+                <button onclick="navigateToBoard(4)">복지동 식당</button>
+            </nav>
+            <div class="header-bottom">
+                <div id="datetime"></div>
+                <div class="auth-buttons">
+                    <button class="authButton" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+
+    <main id="board">
+        <h2>식당 평가</h2>
+        <button id="newPostBtn">평가글 작성</button>
+        <select id="sortOptions" onchange="sortPosts()">
+            <option value="latest">최신순</option>
+            <option value="popular">인기순</option>
+            <option value="rating">별점 높은 순</option>
+        </select>
+        <div style="flex-grow: 1; text-align: right;">
+            <input type="text" id="searchInput" placeholder="검색..." oninput="filterPosts()">
+        </div>
+        <ul id="postList"></ul>
+    </main>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>평가글 작성</h2>
+            <form id="postForm">
+                <div class="rating">
+                    <span>(별점) </span>
+                    <input type="radio" name="rating" value="1" id="star1" checked><label for="star1">★</label>
+                    <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                    <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                    <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                    <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>                
+                </div><br>  
+                <textarea id="content" placeholder="메뉴 평가 작성" required></textarea><br>              
+                <button type="submit">업로드</button>
+            </form>            
+        </div>
+    </div>
+
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContentModal()">&times;</span>
+            <h2>글의 내용</h2>
+            <div id="postContent"></div>
+        </div>
+    </div>
+
+    <script src="/js/rating.js"></script>
+</body>
+</html>

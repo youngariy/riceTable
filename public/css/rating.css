@@ -1,0 +1,346 @@
+header {
+  background-color: white;
+  color: white;
+  padding: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#home-title {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center; /* Vertically centers the text with the image */
+  margin: 0;
+  padding: 0;
+}
+
+#home-title img {
+  width: 100px;
+  height: auto;
+  margin-right: 10px; /* Adds space between the image and text */
+  margin-bottom: 10px;
+}
+
+#home-title span {
+  font-size: 50px; /* Adjust font size as needed */
+    color: black; /* Set text color */
+    padding:5px;
+    font-family: "East Sea Dokdo", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#home-title:hover {
+  transform: scale(1.1);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav {
+  margin-bottom: 10px;
+}
+
+nav button {
+  padding: 15px 20px;
+  margin: 5px 40px;
+  border: none;
+  border-radius: 8px;
+  background-color: white; /* 색상 제거, 기본 배경 */
+  color: black; /* 기본 텍스트 색상 */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+  background-color: #f0f0f0; /* 밝은 회색으로 호버 시 변경 */
+  transform: scale(1.05); /* 살짝 커지는 효과 */
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  position: relative;
+  margin: 0;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.authButton {
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+#datetime {
+  font-size: 16px;
+  color: black;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 40px;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f4f6f9, #ffffff); /* 부드러운 그라데이션 배경 */
+  color: #333; /* 더 나은 가독성을 위한 다크 그레이 색상 */
+  background-attachment: fixed;
+  transition: background 0.3s ease-in-out; /* 부드러운 배경 전환 효과 */
+}
+
+
+
+/* 메인 컨텐츠 스타일 */
+main {
+  padding: 20px;
+  margin: 30px auto;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 모던한 박스 그림자 */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  background: #f9f9f9;
+  margin: 15px 0;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #555;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* 라디오 버튼과 라벨 스타일 (추천/비추천) */
+label {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 1rem;
+  color: black; /* 라벨 텍스트가 보이도록 검은색 설정 */
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+  transform: scale(1.2); /* 라디오 버튼 크기 조절 */
+}
+
+/* 별점 영역 스타일 */
+.rating {
+  display: inline-flex; /* 한 줄에 딱 맞게 정렬 */
+  align-items: center; /* 세로 정렬 */
+  direction: rtl; /* 오른쪽에서 왼쪽 정렬 */
+}
+
+.rating span {
+  color: black; /* 텍스트를 검정색으로 설정 */
+  font-weight: bold; /* 텍스트 강조 */
+  margin: 0; /* 간격 제거 */
+  padding: 0; /* 내부 여백 제거 */
+}
+
+.rating input {
+  display: none; /* 라디오 버튼 숨김 */
+}
+
+.rating label {
+  font-size: 2rem;
+  color: lightgray; /* 기본 상태에서는 연한 회색 */
+  cursor: pointer;
+  transition: color 0.3s;
+  margin: 0; /* 간격 제거 */
+  padding: 0; /* 내부 여백 제거 */
+}
+
+/* 선택된 별과 그 오른쪽 별들을 금색으로 표시 */
+.rating input:checked ~ label {
+  color: gold;
+}
+
+/* 마우스를 올리면 해당 별과 오른쪽 별들이 금색으로 표시 */
+.rating label:hover,
+.rating label:hover ~ label {
+  color: gold;
+}
+
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  max-width: 90%;
+  width: 600px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+/* 게시글 작성 제목만 검정색으로 설정 */
+#postModal h2 {
+  color: black; /* 검정색으로 설정 */
+}
+
+.close {
+  align-self: flex-end;
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+}
+
+/* 글 내용 모달 스타일 */
+#contentModal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  width: 80%; /* 가로 크기 설정 */
+  max-width: 600px; /* 최대 너비 설정 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 80vh; /* 화면 높이에 따라 스크롤 */
+}
+
+/* 모달 내부 내용 정렬 및 스타일 */
+/* 글 내용 모달 스타일 */
+#contentModal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  width: 70%; /* 약간 줄인 가로 크기 설정 */
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* 모달 내부 내용 정렬 및 스타일 */
+#contentModal .modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+#contentModal h2 {
+  color: #333; /* 제목 색상 */
+  font-size: 1.8rem; /* 조금 더 큰 제목 */
+  margin-bottom: 15px;
+}
+
+#postContent {
+  color: #444;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  text-align: left;
+  word-break: break-word;
+}
+#postContentContainer {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  height: auto; /* 높이 자동 설정 */
+  margin-bottom: 15px;
+}
+#postContent + p {
+  margin-top: auto; /* 별점이 최하단에 위치하도록 설정 */
+  text-align: right; /* 별점 오른쪽 정렬 */
+  margin-bottom: 0;
+  font-size: 1.5rem; /* 별점 크기 조절 */
+}
+
+#postRating {
+  text-align: left; /* 별점을 왼쪽에 정렬 */
+  font-size: 1.5rem;
+  margin: 0 0 15px 0; /* 위와 아래 여백 추가 */
+}
+/* 닫기 버튼 스타일 */
+#contentModal .close {
+  align-self: flex-end;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 5px;
+  transition: color 0.3s;
+}
+
+#contentModal .close:hover {
+  color: #000; /* 마우스 오버 시 닫기 버튼 색상 변경 */
+}
+
+
+#title {
+  width: 100%;
+  max-width: 500px; /* 최대 너비 고정 */
+  height: 40px; /* 높이 고정 */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#content {
+  width: 100%;
+  max-width: 500px; /* 최대 너비 고정 */
+  height: 200px; /* 높이 고정 */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none; /* 사용자가 크기 조절 못하도록 설정 */
+}
