@@ -26,7 +26,9 @@ connectDb();
 // 미들웨어 설정
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: 'https://riceserver.onrender.com', // Netlify에서 배포된 URL
+  }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -35,7 +37,7 @@ const postRoutes = require('./routes/postRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 // 라우트 설정
-app.use(userRoutes); // '/'삭제
+// app.use(userRoutes); // '/'삭제
 app.use('/api/posts', postRoutes);
 app.use('/api/user', userRoutes);
 
