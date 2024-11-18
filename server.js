@@ -27,7 +27,8 @@ connectDb();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'https://riceserver.onrender.com', // Netlify에서 배포된 URL
+    origin: 'https://riceserver.onrender.com',
+    // credentials: true, // 인증 정보(쿠키 등) 허용
   }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -116,4 +117,8 @@ initializeDatabase().catch((err) => console.error('데이터베이스 초기화 
 const surveyRoutes = require('./routes/surveyRoutes');
 app.use('/api/surveys', surveyRoutes);
 
+
+//rating 라우터 등록
+const ratingRoutes = require('./routes/ratingRoutes');
+app.use('/api/ratings', ratingRoutes);
 
