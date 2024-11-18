@@ -37,7 +37,7 @@ const postRoutes = require('./routes/postRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 // 라우트 설정
-// app.use(userRoutes); // '/'삭제
+app.use(userRoutes); // '/'삭제
 app.use('/api/posts', postRoutes);
 app.use('/api/user', userRoutes);
 
