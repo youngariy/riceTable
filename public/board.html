@@ -57,24 +57,37 @@
             <span class="close" onclick="closeContentModal()">&times;</span>
             <div id="postContent"></div>
             <button id="likeButton"></button>
-            <button onclick="openCommentModal();">댓글 보기</button>
+            <!-- 게시글 ID를 동적으로 전달 -->
+            <button id="commentButton">댓글 보기</button>
             <button onclick="deletePost();">삭제</button>
             <button onclick="closeContentModal();">닫기</button>
         </div>
     </div>
 
     <!-- 댓글 모달 -->
-    <div id="commentModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeCommentModal()">&times;</span>
-            <div id="comments"></div>
-            <form id="commentForm">
-                <input type="text" id="commentInput" placeholder="댓글을 입력하세요" required>
-                <button type="submit">댓글 추가</button>
-            </form>
-        </div>
+    <!-- 댓글 모달 -->
+<div id="commentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCommentModal()">&times;</span>
+        <div id="comments"></div>
+        <form id="commentForm">
+            <input type="text" id="commentInput" placeholder="댓글을 입력하세요" required>
+            <button type="submit">댓글 추가</button>
+        </form>
     </div>
+</div>
+
     
+    <script>
+        // 댓글 보기 버튼 클릭 시, 해당 게시글 ID 전달
+        document.getElementById('commentButton').onclick = function () {
+            if (selectedPostId) {
+                openCommentModal(selectedPostId);
+            } else {
+                alert('게시글을 선택해주세요.');
+            }
+        };
+    </script>
     <script src="/js/board.js"></script>
 </body>
 </html>

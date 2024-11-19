@@ -22,6 +22,6 @@ router.post('/:id/like', postController.toggleLike);
 router.post('/:id/comments', postController.addComment);
 
 // 댓글 삭제
-router.delete('/:id/comments', postController.deleteComment);
+router.delete('/:id/comments/:commentId', postController.deleteComment);
 
 module.exports = router;

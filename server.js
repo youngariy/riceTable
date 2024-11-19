@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-
+const cookieParser = require('cookie-parser'); //쿠키 초기화
 // Express 앱 생성
 const app = express();
 
@@ -31,15 +31,16 @@ app.use(cors({
     // credentials: true, // 인증 정보(쿠키 등) 허용
   }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cookieParser());
 
 // 라우트 불러오기
 const postRoutes = require('./routes/postRoutes');
 const userRoutes = require('./routes/userRoutes');
+const { protect } = require('./middlewares/authMiddleware'); // 인증 미들웨어 임포트
 
 // 라우트 설정
 app.use(userRoutes); // '/'삭제
-app.use('/api/posts', postRoutes);
+app.use('/api/posts',protect, postRoutes);
 app.use('/api/user', userRoutes);
 
 // 메인 페이지 라우팅
