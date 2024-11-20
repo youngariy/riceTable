@@ -10,6 +10,9 @@ router.post('/', protect, ratingController.createRating);
 // 게시글 목록 조회
 router.get('/', ratingController.getRatings);
 
+// 평균 별점 조회 (새로운 엔드포인트 추가)
+router.get('/average', ratingController.getAverageRating);
+
 // 특정 게시글 조회
 router.get('/:id', ratingController.getRatingById);
 

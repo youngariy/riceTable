@@ -1,4 +1,5 @@
 // models/Survey.js
+//메인화면에서 수요조사를 위한 모델
 const mongoose = require('mongoose');
 
 const surveySchema = new mongoose.Schema({

@@ -17,6 +17,30 @@ let selectedPostId = null; // 선택한 게시글 ID 저장
 let sortBy = 'latest'; // 'latest', 'likes', 'title' 중 하나
 let currentUser = null; // 현재 로그인한 사용자 정보 저장
 
+
+//퀵 정렬 함수 구현
+function quickSort(arr, compareFunc) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    const pivotIndex = Math.floor(arr.length / 2);
+    const pivot = arr[pivotIndex];
+    const less = [];
+    const more = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        if (i === pivotIndex) continue;
+        if (compareFunc(arr[i], pivot) < 0) {
+            less.push(arr[i]);
+        } else {
+            more.push(arr[i]);
+        }
+    }
+
+    return [...quickSort(less, compareFunc), pivot, ...quickSort(more, compareFunc)];
+}
+
+
 // 사용자 정보 가져오기
 async function getUserProfile() {
     try {
@@ -95,20 +119,23 @@ async function loadPosts() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const posts = await response.json();
+        let posts = await response.json(); // 'const'에서 'let'으로 변경
 
         // 응답 데이터가 배열인지 확인
         if (!Array.isArray(posts)) {
             throw new Error('Posts 데이터가 배열이 아닙니다.');
         }
 
-        // 현재의 정렬 기준에 따라 정렬합니다.
+        // 날짜 필드명을 MongoDB 스키마에 따라 변경
+        const dateField = 'createdAt'; // 또는 'date', 'timestamp' 등 실제 필드명으로 변경
+
+        // 현재의 정렬 기준에 따라 퀵정렬을 사용하여 정렬합니다.
         if (sortBy === 'title') {
-            posts.sort((a, b) => a.title.localeCompare(b.title));
+            posts = quickSort(posts, (a, b) => a.title.localeCompare(b.title));
         } else if (sortBy === 'likes') {
-            posts.sort((a, b) => b.likes - a.likes);
+            posts = quickSort(posts, (a, b) => b.likes - a.likes);
         } else if (sortBy === 'latest') {
-            posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            posts = quickSort(posts, (a, b) => new Date(b[dateField]) - new Date(a[dateField]));
         }
 
         // 게시글을 화면에 표시합니다.
@@ -134,7 +161,7 @@ async function loadPosts() {
 document.getElementById('sortOptions').addEventListener('change', function() {
     sortBy = this.value; // 선택한 정렬 기준으로 설정
     loadPosts(); // 게시글 다시 로드
-});
+}); 
 
 async function showPostContent(id) {
     try {

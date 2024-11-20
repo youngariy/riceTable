@@ -1,3 +1,5 @@
+//게시글 모델
+
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({

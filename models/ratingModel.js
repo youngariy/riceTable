@@ -1,3 +1,4 @@
+//평가페이지 모델
 const mongoose = require('mongoose');
 
 const ratingSchema = new mongoose.Schema({

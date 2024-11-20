@@ -112,3 +112,27 @@ exports.dislikeRating = async (req, res) => {
         res.status(500).json({ message: '비추천 추가 중 오류가 발생했습니다.' });
     }
 };
+
+
+// 평균 별점 계산
+exports.getAverageRating = async (req, res) => {
+    try {
+        const board = req.query.board;
+        const average = await Rating.aggregate([
+            { $match: { board: Number(board) } },
+            {
+                $group: {
+                    _id: null,
+                    averageRating: { $avg: "$rating" }
+                }
+            }
+        ]);
+
+        const avgRating = average.length > 0 ? average[0].averageRating : 0;
+
+        res.json({ averageRating: avgRating });
+    } catch (error) {
+        console.error('평균 별점 계산 오류:', error);
+        res.status(500).json({ message: '평균 별점 계산 중 오류가 발생했습니다.' });
+    }
+};

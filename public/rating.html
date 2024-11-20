@@ -33,13 +33,16 @@
     <main id="board">
         <h2>식당 평가</h2>
         <button id="newPostBtn">평가글 작성</button>
-        <select id="sortOptions" onchange="sortPosts()">
-            <option value="latest">최신순</option>
-            <option value="popular">인기순</option>
-            <option value="rating">별점 높은 순</option>
-        </select>
-        <div style="flex-grow: 1; text-align: right;">
-            <input type="text" id="searchInput" placeholder="검색..." oninput="filterPosts()">
+        <div class="options-container">
+            <select id="sortOptions">
+                <option value="latest">최신순</option>
+                <option value="popular">좋아요순</option>
+                <option value="rating">별점 높은 순</option>
+            </select>
+            <span id="averageRating" style="margin-left: 20px;">평균 별점: </span>
+            <div style="flex-grow: 1; text-align: right;">
+                <input type="text" id="searchInput" placeholder="검색..." oninput="filterPosts()">
+            </div>
         </div>
         <ul id="postList"></ul>
     </main>
@@ -68,7 +71,7 @@
             <span class="close" onclick="closeContentModal()">&times;</span>
             <h2>글의 내용</h2>
             <div id="postContent"></div>
-            <!-- 삭제 버튼 제거 -->
+            <button id="deleteButton" onclick="deletePostInModal()" style="display: none; margin-top: 10px;">삭제</button>
         </div>
     </div>
 

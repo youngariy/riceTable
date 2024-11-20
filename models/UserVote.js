@@ -1,4 +1,5 @@
 // models/UserVote.js
+//게시판에 이름 띄우기 위한 모델
 const mongoose = require('mongoose');
 
 const userVoteSchema = new mongoose.Schema({

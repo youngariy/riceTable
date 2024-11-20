@@ -16,6 +16,55 @@ let selectedPostId = null;
 let sortBy = 'latest';
 let currentUser = null; // 현재 로그인한 사용자 정보 저장
 
+// 퀵정렬 함수 구현
+function quickSort(arr, compareFunc) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    const pivotIndex = Math.floor(arr.length / 2);
+    const pivot = arr[pivotIndex];
+    const less = [];
+    const more = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (i === pivotIndex) continue;
+        if (compareFunc(arr[i], pivot) < 0) {
+            less.push(arr[i]);
+        } else {
+            more.push(arr[i]);
+        }
+    }
+    return [...quickSort(less, compareFunc), pivot, ...quickSort(more, compareFunc)];
+}
+
+
+
+// 평균 별점 가져오기
+async function getAverageRating() {
+    try {
+        const response = await fetch(`/api/ratings/average?board=${currentBoard}`, {
+            credentials: 'include'
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const avgRating = data.averageRating;
+        displayAverageRating(avgRating);
+    } catch (error) {
+        console.error('평균 별점 로드 중 오류 발생:', error);
+    }
+}
+
+// 평균 별점 표시
+function displayAverageRating(avgRating) {
+    const avgRatingElement = document.getElementById('averageRating');
+    if (avgRatingElement) {
+        avgRatingElement.textContent = `평균 별점: ${avgRating.toFixed(1)} / 5`;
+    } else {
+        console.error('Average rating element not found in HTML.');
+    }
+}
+
 // 사용자 정보 가져오기
 async function getUserProfile() {
     try {
@@ -41,6 +90,7 @@ function navigateToBoard(boardId) {
     currentBoard = boardId;
     document.querySelector('h2').textContent = `${boards[boardId]} 평가`;
     loadPosts();
+    getAverageRating(); // 평균 별점 가져오기
 }
 
 // 페이지 로드 시 게시글 로딩 및 사용자 정보 가져오기
@@ -133,6 +183,7 @@ postForm.onsubmit = async function (event) {
         console.error('게시글 작성 중 오류 발생:', error);
         alert('게시글 작성 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
+    getAverageRating(); // 평균 별점 가져오기
 };
 
 async function loadPosts() {
@@ -149,16 +200,15 @@ async function loadPosts() {
         // 데이터 구조에 따라 ratings 필드 사용 여부 확인
         let posts = data.ratings || data; // 백엔드에 따라 조정 필요
 
-        // 현재의 정렬 기준에 따라 정렬합니다.
+        // 현재의 정렬 기준에 따라 퀵정렬을 사용하여 정렬합니다.
         const selectedOption = document.getElementById('sortOptions').value;
         if (selectedOption === 'popular') {
-            posts.sort((a, b) => b.likes - a.likes);
+            posts = quickSort(posts, (a, b) => b.likes - a.likes);
         } else if (selectedOption === 'rating') {
-            posts.sort((a, b) => b.rating - a.rating);
+            posts = quickSort(posts, (a, b) => b.rating - a.rating);
         } else {
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            posts = quickSort(posts, (a, b) => new Date(b.date) - new Date(a.date));
         }
-
         posts.forEach((post) => {
             console.log('게시글 정보:', post); // 디버깅용 로그
 
@@ -175,7 +225,7 @@ async function loadPosts() {
                 <p id="postRating">별점: ${'★'.repeat(post.rating)}${'☆'.repeat(5 - post.rating)}</p>
                 <button onclick="likePost('${post._id}')">추천 (${post.likes})</button>
                 <button onclick="dislikePost('${post._id}')">비추천 (${post.dislikes})</button>
-                ${currentUser && String(post.authorId) === String(currentUser._id) ? `<button onclick="deletePost('${post._id}')" style="margin-left: 10px;">삭제</button>` : ''}
+                ${currentUser && String(post.authorId) === String(currentUser._id) ? `<button onclick="deleteRating('${post._id}')" style="margin-left: 10px;">삭제</button>` : ''}
             `;
             postList.appendChild(li);
         });
@@ -183,6 +233,51 @@ async function loadPosts() {
         console.error('게시글 로드 중 오류 발생:', error);
         alert('게시글을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
+    getAverageRating(); // 평균 별점 가져오기
+}
+
+// 삭제 함수 추가
+async function deleteRating(id) {
+    if (!id) {
+        alert('삭제할 평가의 ID가 없습니다.');
+        return;
+    }
+
+    const confirmDelete = confirm('정말로 이 평가를 삭제하시겠습니까?');
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/ratings/${id}`, {
+            method: 'DELETE',
+            credentials: 'include' // 로그인된 사용자 정보를 포함
+        });
+
+        if (response.status === 403) {
+            const errorData = await response.json();
+            alert(errorData.message); // "삭제 권한이 없습니다." 메시지 표시
+            return;
+        }
+
+        if (response.status === 404) {
+            const errorData = await response.json();
+            alert(errorData.message); // "평가를 찾을 수 없습니다." 메시지 표시
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        alert('평가가 성공적으로 삭제되었습니다.');
+        loadPosts(); // 삭제 후 목록을 다시 로드
+    } catch (error) {
+        console.error('평가 삭제 중 오류 발생:', error);
+        alert('평가 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
+    }
+    loadPosts();
+    getAverageRating(); // 평균 별점 가져오기
 }
 
 document.getElementById('sortOptions').addEventListener('change', function() {
@@ -206,6 +301,8 @@ async function likePost(postId) {
         console.error('추천 중 오류 발생:', error);
         alert('추천 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
+    loadPosts();
+    getAverageRating(); // 평균 별점 가져오기
 }
 
 async function dislikePost(postId) {
@@ -224,6 +321,8 @@ async function dislikePost(postId) {
         console.error('비추천 중 오류 발생:', error);
         alert('비추천 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
+    loadPosts();
+    getAverageRating(); // 평균 별점 가져오기
 }
 
 async function deletePost(postId) {

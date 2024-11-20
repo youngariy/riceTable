@@ -1,3 +1,4 @@
+//회원가입시 모델
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
