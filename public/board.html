@@ -27,13 +27,22 @@
         <h2 class="board-title">식당 게시판</h2>
         <div class="post-controls">
             <button id="newPostBtn">게시글 작성</button>
-            <select id="sortOptions" onchange="sortPosts()">
+            
+            <select id="sortOptions">
                 <option value="latest">최신순</option>
                 <option value="likes">좋아요순</option>
                 <option value="title">제목순</option>
             </select>
+            <!-- 정렬 버튼 추가 -->
+            <button id="sortBtn">정렬</button>
             <div style="flex-grow: 1; text-align: right;">
-                <input type="text" id="searchInput" placeholder="검색..." oninput="filterPosts()">
+                <input type="text" id="searchInput" placeholder="검색...">
+                <select id="searchOptions">
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                </select>
+                <!-- 검색 버튼에 id 추가 -->
+                <button id="searchBtn">검색</button>
             </div>
         </div>
         <ul id="postList"></ul>
