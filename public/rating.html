@@ -10,39 +10,41 @@
 </head>
 <body>
     <header>
-        <h1 id="home-title" onclick="goHome()">
-            <img src="https://i.ibb.co/2q39S4Q/Kakao-Talk-20241105-184701002-removebg-preview.png" alt="밥상머리" style="border: 0;">
+        <div id="home-title" onclick="goHome()">
+            <img src="https://i.ibb.co/2q39S4Q/Kakao-Talk-20241105-184701002-removebg-preview.png" alt="밥상머리">
             <span>밥상머리</span>
-        </h1>
-        <div class="header-content">
-            <nav>
-                <button onclick="navigateToBoard(1)">명진당</button>
-                <button onclick="navigateToBoard(2)">학생회관</button>
-                <button onclick="navigateToBoard(3)">교직원 식당</button>
-                <button onclick="navigateToBoard(4)">복지동 식당</button>
-            </nav>
-            <div class="header-bottom">
-                <div id="datetime"></div>
-                <div class="auth-buttons">
-                    <button class="authButton" onclick="logout()">로그아웃</button>
-                </div>
-            </div>
         </div>
+        <nav>
+            <button onclick="navigateToBoard(1)">명진당</button>
+            <button onclick="navigateToBoard(2)">학생회관</button>
+            <button onclick="navigateToBoard(3)">복지동식당</button>
+            <button onclick="navigateToBoard(4)">교직원식당</button>
+        </nav>
+        <!-- <button id="logout-button" onclick="logout()">로그아웃</button> -->
+        <div id="datetime"></div>
     </header>
+    
 
     <main id="board">
         <h2>식당 평가</h2>
-        <button id="newPostBtn">평가글 작성</button>
         <div class="options-container">
+            <button id="newPostBtn">평가글 작성</button>
             <select id="sortOptions">
                 <option value="latest">최신순</option>
                 <option value="popular">좋아요순</option>
                 <option value="rating">별점 높은 순</option>
             </select>
-            <span id="averageRating" style="margin-left: 20px;">평균 별점: </span>
+            <button id="sortBtn">정렬</button>
             <div style="flex-grow: 1; text-align: right;">
-                <input type="text" id="searchInput" placeholder="검색..." oninput="filterPosts()">
+                <input type="text" id="searchInput" placeholder="검색...">
+                <select id="searchOptions">
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                </select>
+                <button id="searchBtn">검색</button>
             </div>
+        </div>        
+            <span id="averageRating" style="margin-left: 20px;">평균 별점: </span>
         </div>
         <ul id="postList"></ul>
     </main>

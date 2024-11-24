@@ -92,14 +92,16 @@ nav button:hover {
     text-decoration: underline;
 }
 
+/* 시간 표시 스타일 */
 #datetime {
     font-size: 16px;
     color: black;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 15px;
+    position: absolute; /* 절대 위치 */
+    left: 50%; /* 수평 중앙 정렬 */
+    transform: translateX(-50%); /* 정렬 보정 */
+    margin-top: 15px; /* 위쪽 여백 */
 }
+
 
 /* 메인 컨텐츠 스타일 */
 main {

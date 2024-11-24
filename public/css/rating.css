@@ -1,10 +1,22 @@
-header {
-  background-color: white;
-  color: white;
-  padding: 20px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* 전체 페이지 스타일 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f4f6f9, #ffffff);
+  color: #333;
+  background-attachment: fixed;
 }
 
+/* 헤더 스타일 */
+header {
+  background-color: white;
+  padding: 40px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* 홈 타이틀 스타일 */
 #home-title {
   position: absolute;
   top: 3%;
@@ -12,7 +24,7 @@ header {
   cursor: pointer;
   transition: transform 0.2s;
   display: flex;
-  align-items: center; /* Vertically centers the text with the image */
+  align-items: center;
   margin: 0;
   padding: 0;
 }
@@ -20,31 +32,29 @@ header {
 #home-title img {
   width: 100px;
   height: auto;
-  margin-right: 10px; /* Adds space between the image and text */
+  margin-right: 10px;
   margin-bottom: 10px;
+  margin-top: 30px; /* 위쪽 여백 추가 */
 }
 
 #home-title span {
-  font-size: 50px; /* Adjust font size as needed */
-    color: black; /* Set text color */
-    padding:5px;
-    font-family: "East Sea Dokdo", serif;
-    font-weight: 400;
-    font-style: normal;
+  font-size: 50px;
+  color: black;
+  padding: 5px;
+  font-family: "East Sea Dokdo", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 #home-title:hover {
   transform: scale(1.1);
 }
 
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* 네비게이션 메뉴 스타일 */
 nav {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 nav button {
@@ -52,18 +62,47 @@ nav button {
   margin: 5px 40px;
   border: none;
   border-radius: 8px;
-  background-color: white; /* 색상 제거, 기본 배경 */
-  color: black; /* 기본 텍스트 색상 */
+  background-color: white;
+  color: black;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s, transform 0.2s;
 }
 
 nav button:hover {
-  background-color: #f0f0f0; /* 밝은 회색으로 호버 시 변경 */
-  transform: scale(1.05); /* 살짝 커지는 효과 */
+  background-color: #f0f0f0;
+  transform: scale(1.05);
 }
 
+/* 로그아웃 버튼 스타일 */
+#logout-button {
+  position: absolute;
+  top: 70%; /* 버튼을 수직 가운데로 */
+  right: 3%;
+  transform: translateY(-50%); /* 정렬 보정 */
+  font-size: 16px;
+  color: black;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#logout-button:hover {
+  text-decoration: underline;
+}
+
+/* 시간 표시 스타일 */
+#datetime {
+  font-size: 16px;
+  color: black;
+  position: absolute; /* 절대 위치 */
+  left: 50%; /* 수평 중앙 정렬 */
+  transform: translateX(-50%); /* 정렬 보정 */
+  margin-top: 15px; /* 위쪽 여백 */
+}
+
+
+/*
 .header-bottom {
   display: flex;
   justify-content: space-between;
@@ -101,12 +140,11 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #f4f6f9, #ffffff); /* 부드러운 그라데이션 배경 */
-  color: #333; /* 더 나은 가독성을 위한 다크 그레이 색상 */
+  background: linear-gradient(135deg, #f4f6f9, #ffffff); 
+  color: #333; 
   background-attachment: fixed;
-  transition: background 0.3s ease-in-out; /* 부드러운 배경 전환 효과 */
-}
-
+  transition: background 0.3s ease-in-out; 
+} */
 
 
 /* 메인 컨텐츠 스타일 */
@@ -140,6 +178,14 @@ li:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* rating.css에서 제목 스타일 수정 */
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: black;
+}
 
 /* 라디오 버튼과 라벨 스타일 (추천/비추천) */
 label {
@@ -343,4 +389,105 @@ input[type="radio"] {
   border-radius: 4px;
   box-sizing: border-box;
   resize: none; /* 사용자가 크기 조절 못하도록 설정 */
+}
+
+/* rating.css에 추가 */
+.options-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.options-container button, 
+.options-container select, 
+.options-container input[type="text"] {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.options-container select, 
+.options-container input[type="text"] {
+  margin-left: 10px;
+}
+
+.options-container button {
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.options-container button:hover {
+  background-color: #f0f0f0;
+}
+
+/* rating.css에 추가 */
+.options-container input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.options-container select {
+  padding: 10px;
+  margin-left: 5px;
+}
+
+.options-container #searchBtn {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.options-container #searchBtn:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* rating.css에 추가 */
+#averageRating {
+  margin-left: 15px;
+  font-size: 16px;
+  color: #333;
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  #home-title img {
+      width: 60px;
+      height: auto;
+  }
+
+  #home-title span {
+      font-size: 24px;
+  }
+
+  nav {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  nav button {
+      margin: 5px 0;
+  }
+
+  .post-controls {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .post-controls > * {
+      margin: 5px 0;
+  }
 }
