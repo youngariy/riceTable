@@ -314,6 +314,12 @@ async function deletePost(id) {
         id = selectedPostId;
     }
 
+    // 삭제 확인 메시지 표시
+    const confirmDelete = confirm('정말로 이 게시글을 삭제하시겠습니까?');
+    if (!confirmDelete) {
+        return; // 사용자가 취소를 선택하면 함수 종료
+    }
+
     try {
         const response = await fetch(`/api/posts/${id}`, {
             method: 'DELETE',
@@ -333,12 +339,13 @@ async function deletePost(id) {
 
         alert('게시글이 성공적으로 삭제되었습니다.');
         closeContentModal();
-        loadPosts();
+        loadPosts(); // 게시글 목록 새로고침
     } catch (error) {
         console.error('게시글 삭제 중 오류 발생:', error);
         alert('게시글 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 }
+
 
 function goHome() {
     window.location.href = '/'; // 홈으로 이동
@@ -376,7 +383,7 @@ function openCommentModal(postId) {
     selectedPostId = postId; // 선택된 게시글 ID 저장
     loadComments(postId); // 해당 게시글의 댓글 로드
     const commentModal = document.getElementById('commentModal'); // 댓글 모달 엘리먼트 가져오기
-    commentModal.style.display = 'block'; // 댓글 모달 열기
+    commentModal.style.display = 'block'; // 댓글 모달 열기 block에서 flex로 수정
 }
 
 // 댓글 모달 닫기
@@ -385,7 +392,6 @@ function closeCommentModal() {
     commentModal.style.display = 'none'; // 댓글 모달 닫기
 }
 
-// 댓글 로드 함수
 async function loadComments(postId) {
     try {
         const response = await fetch(`/api/posts/${postId}`, {
@@ -395,19 +401,22 @@ async function loadComments(postId) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const post = await response.json();
-        console.log('로드된 게시글:', post); // 디버깅을 위해 데이터 출력
-        
+        console.log('로드된 게시글:', post); // 디버깅용
+
         const commentsDiv = document.getElementById('comments');
         commentsDiv.innerHTML = ''; // 기존 댓글 초기화
+
         post.comments.forEach((comment) => {
             const commentElement = document.createElement('div');
+            commentElement.className = 'comment'; // 댓글 스타일 클래스 추가
+
             commentElement.innerHTML = `
-                <p><strong>${comment.authorName}:</strong> ${comment.content}</p>
-                ${
-                    comment.authorId === currentUser._id
-                        ? `<button onclick="deleteComment('${comment._id}')">삭제</button>`
-                        : ''
-                }
+                <div class="comment-header">
+                    <button class="delete-button" onclick="deleteComment('${comment._id}')">삭제</button>
+                </div>
+                <div class="comment-content">
+                    <p><strong>${comment.authorName}:</strong> ${comment.content}</p>
+                </div>
             `;
             commentsDiv.appendChild(commentElement);
         });
@@ -443,20 +452,34 @@ commentForm.onsubmit = async function(event) {
     }
 };
 
-// 댓글 삭제 함수 추가
+
+// 댓글 삭제 함수 수정
 async function deleteComment(commentId) {
-    if (!confirm('댓글을 삭제하시겠습니까?')) {
+    if (!confirm('정말로 댓글을 삭제하시겠습니까?')) {
         return;
     }
 
     try {
-        await fetch(`/api/posts/${selectedPostId}/comments/${commentId}`, {
+        const response = await fetch(`/api/posts/${selectedPostId}/comments/${commentId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
+
+        if (response.status === 403) {
+            const errorData = await response.json();
+            alert(errorData.message); // "삭제 권한이 없습니다." 메시지 표시
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        alert('댓글이 성공적으로 삭제되었습니다.');
         loadComments(selectedPostId); // 댓글 목록 다시 로드
     } catch (error) {
         console.error('댓글 삭제 중 오류 발생:', error);
+        alert('댓글 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 }
 

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
    const campus = new CampusRestaurants();
    
    // 메뉴 데이터 설정
-   campus.addMenu('myungJinDang', '기사식당돼지불백', 5500, [
+   campus.addMenu('myungJinDang', '기사식당돼지불백', 6500, [
        '김치우동장국',
        '동그랑땡*케찹',
        '고추장아찌',
@@ -46,9 +46,9 @@ document.addEventListener("DOMContentLoaded", function() {
        '요구르트'
    ]);
 
-   campus.addMenu('studentHall', '불맛나가사끼짬뽕', 4500, []);
+   campus.addMenu('studentHall', '불맛나가사끼짬뽕', 6000, []);
 
-   campus.addMenu('facultyHall', '제육볶음', 6000, [
+   campus.addMenu('facultyHall', '제육볶음', 6500, [
        '잡곡밥/쌀밥',
        '미역국',
        '고구마맛탕',
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
        '요구르트'
    ]);
 
-   campus.addMenu('welfare', '김치돈육조림', 5000, [
+   campus.addMenu('welfare', '김치돈육조림', 6000, [
        '백미밥',
        '미역국',
        '메추리알곤조림',
@@ -106,24 +106,41 @@ function updateMenuDisplay(menus) {
         const menu = menus[restaurantKey];
 
         if (menu) {
+            // 테이블 형식으로 메뉴 정보 표시
             menuInfo.innerHTML = `
                 <table class="menu-table">
-                    <tr>
-                        <td class="menu-label">메인메뉴</td>
-                        <td class="menu-value">${menu.name}</td>
-                    </tr>
-                    <tr>
-                        <td class="menu-label">가격</td>
-                        <td class="menu-value">${menu.price}원</td>
-                    </tr>
-                    <tr>
-                        <td class="menu-label">반찬</td>
-                        <td class="menu-value">${menu.sideDishes.join(', ')}</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>메인메뉴</td>
+                            <td>${menu.name}</td>
+                        </tr>
+                        <tr>
+                            <td>가격</td>
+                            <td class="menu-price">${menu.price.toLocaleString()}원</td>
+                        </tr>
+                        ${menu.sideDishes.length > 0 ? `
+                        <tr>
+                            <td>반찬</td>
+                            <td class="menu-sidedish">${menu.sideDishes.join(', ')}</td>
+                        </tr>
+                        ` : ''}
+                    </tbody>
                 </table>
             `;
         } else {
-            menuInfo.textContent = "오늘의 메뉴가 없습니다";
+            menuInfo.innerHTML = `
+                <table class="menu-table">
+                    <tr>
+                        <td style="text-align: center;">오늘의 메뉴가 없습니다</td>
+                    </tr>
+                </table>
+            `;
         }
     });
 }

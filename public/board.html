@@ -62,18 +62,16 @@
 
     <!-- 게시글 내용 모달 -->
     <div id="contentModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeContentModal()">&times;</span>
-            <div id="postContent"></div>
-            <button id="likeButton"></button>
-            <!-- 게시글 ID를 동적으로 전달 -->
-            <button id="commentButton">댓글 보기</button>
-            <button onclick="deletePost();">삭제</button>
-            <button onclick="closeContentModal();">닫기</button>
-        </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeContentModal()">&times;</span>
+        <div id="postContent"></div>
+        <button id="likeButton"></button>
+        <button id="commentButton">댓글 보기</button>
+        <button onclick="deletePost();">삭제</button>
+        <button onclick="closeContentModal();">닫기</button>
     </div>
+</div>
 
-    <!-- 댓글 모달 -->
     <!-- 댓글 모달 -->
 <div id="commentModal" class="modal">
     <div class="modal-content">

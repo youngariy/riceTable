@@ -121,7 +121,7 @@ nav button:hover {
     padding: 20px; /* 내부 여백 */
 }
 .restaurant-box > p{
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'Noto Sans KR', sans-serif;
 }
 .restaurant-box:hover {
@@ -189,10 +189,10 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명 검은 배경 */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* 다른 요소 위에 배치 */
 }
 
 .popup-content {
@@ -307,4 +307,44 @@ footer {
         display:none;
     }
 }
+/* 메뉴 테이블 스타일링 */
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
 
+.menu-table th, .menu-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.menu-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.menu-table tr:last-child td {
+    border-bottom: none;
+}
+
+.menu-price {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.menu-sidedish {
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .menu-table th, .menu-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}

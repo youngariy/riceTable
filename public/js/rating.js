@@ -225,7 +225,8 @@ async function loadPosts() {
                 <p id="postRating">별점: ${'★'.repeat(post.rating)}${'☆'.repeat(5 - post.rating)}</p>
                 <button onclick="likePost('${post._id}')">추천 (${post.likes})</button>
                 <button onclick="dislikePost('${post._id}')">비추천 (${post.dislikes})</button>
-                ${currentUser && String(post.authorId) === String(currentUser._id) ? `<button onclick="deleteRating('${post._id}')" style="margin-left: 10px;">삭제</button>` : ''}
+                <button onclick="deleteRating('${post._id}')" style="margin-left: 10px;">삭제</button>
+
             `;
             postList.appendChild(li);
         });

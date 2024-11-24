@@ -36,7 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (!name || !studentId || !email || !userid || !password) {
     // 누락된 필드가 있는 경우 400 상태 코드와 함께 메시지를 반환
-    return res.status(400).json({ message: "모든 필드를 입력해 주세요." });
+    return res.status(400).json({ message: "필드를 정확히 입력하세요." });
 }
   if (validationErrors.length > 0) {
     return res.status(400).json({ 
