@@ -121,8 +121,8 @@ nav button:hover {
     padding: 20px; /* 내부 여백 */
 }
 .restaurant-box > p{
-    font-family: 'Nanum Pen Script', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 .restaurant-box:hover {
     transform: translateY(-5px); /* 마우스 오버 시 위로 이동 */
