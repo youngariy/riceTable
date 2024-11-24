@@ -1,15 +1,13 @@
 body, html {
-    height: 100%; /* body와 html에 높이를 설정 */
-    margin: 0;
-    font-family: "Noto Sans KR", serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-}
-body {
-    /* font-family: 'Arial', sans-serif;  이전 글꼴 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
+}
+
+body {
+    flex: 1;
     background-color: #F5F5F5;
 }
 
@@ -17,7 +15,7 @@ header {
     background-color:white;
     color: white; /* 흰색 텍스트 */
     text-align: center;
-    padding: 5px 0;
+    padding: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
 }
 
@@ -33,8 +31,8 @@ header {
 /* 로고 글꼴 변경 */
 #home-title span {
     font-family: "East Sea Dokdo", serif;
-  font-weight: 400;
-  font-style: normal;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
@@ -55,23 +53,29 @@ header {
 }
 nav {
     margin-top: 20px; /* 네비게이션 메뉴와 로고 사이에 여백 추가 */
+    font-family: 'Noto Sans KR', sans-serif;
 }
 nav button {
     color:black;
     margin: 10px;
     padding: 8px 20px;
-    font-size: 18px;
+    font-size: 16px;
     background-color: white; /* 버튼 배경색 */
     border: none; /* 버튼 테두리 색상 */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s; /* 추가로 부드러운 효과*/ 
+    font-family: 'Noto Sans KR', sans-serif;
+}
+/* 게시판과 평가 버튼만 margin 10px 20px 적용 */
+nav > button:nth-child(1),
+nav > button:nth-child(2) {
+    margin: 10px 40px;
+    font-size: 20px;
 }
 /* 호버담당 */
 nav button:hover {
     background-color: #f0f0f0; /* 마우스 오버 효과 */
-    text-decoration: underline; /* 마우스를 올렸을 때 밑줄 추가 */
 }
-
 
 #auth-buttons ,#user-buttons {
     gap: 5px; /* 로그인, 회원가입 버튼 사이 간격 */
@@ -83,88 +87,53 @@ nav button:hover {
     font-size: 12px; /* 버튼 텍스트 크기 조정 */
     border: none;
     cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
 }
-
 
 #datetime {
     font-size: 16px;
     color:black;
     margin-top: -15px;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 #restaurant-section {
     display: flex;
-    justify-content: space-around;  /* 자식 요소들 간의 간격 조정 */
-    align-items: flex-start; /* 자식 요소들을 상단에 정렬 */
-    margin: 20px;
-    flex-wrap: wrap; /* 줄 바꿈을 허용해 2x2 유지 */
-    height: 100%;
+    justify-content: space-between; /* 박스 간 간격을 줄임 */
+    flex-wrap: wrap; /* 여러 줄로 배치 */ 
+    margin: 20px; /* 섹션 여백 */
+    gap:10px;
 }
 
 .restaurant-box {
     border: 2px solid #ddd;
-    padding: 20px;
-    text-align: center;
-    width: calc(40% - 40px); /* 2x2 유지, 여백 고려 */
-    height: 50%;
-    cursor: pointer;
     border-radius: 5px;
     background-color: white;
+    text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
-    margin: 10px;
+    cursor: pointer;
+
+    /* 크기 설정 */
+    width: calc(45% - 35px); /* 가로 크기 증가 */
+    height: 400px; /* 고정된 세로 크기 */
+    margin: 10px; /* 박스 간 간격 */
+    padding: 20px; /* 내부 여백 */
 }
-
-
+.restaurant-box > p{
+    font-family: 'Nanum Pen Script', sans-serif;
+    font-size: 22px;
+}
 .restaurant-box:hover {
     transform: translateY(-5px); /* 마우스 오버 시 위로 이동 */
 }
 
 .restaurant-box img {
     width: 100%;
-    height: 100%; /* 박스 크기에 맞춤 */
-    object-fit: cover; /* 비율을 유지하며 박스에 맞춤 */
-    border-radius: 5px; /* 이미지 둥근 모서리 */
+    height: auto; /* 이미지 비율 유지 */
+    object-fit: cover; /* 박스에 맞게 조정 */
+    border-radius: 5px;
 }
-
-
-@media (max-width: 768px) {
-    .restaurant-box {
-        width: calc(100% - 40px); /* 작은 화면에서 1열로 변경 */
-    }
-    #home-title img {
-        width: 60px; /* 이미지의 너비를 100px로 설정 */
-        height: auto; /* 높이는 비율에 맞춰 자동 조정 */
-    }
-    #home-title span {
-        font-size: 12px; /* Adjust font size as needed */
-        color: black; /* Set text color */
-    }
-    
-    .auth-buttons {
-        text-align: right;
-    }
-    
-    .authButton {
-        color: rgb(0, 0, 0);
-        font-size: 10px; /* 버튼 텍스트 크기 조정 */
-        border: none;
-        cursor: pointer;
-        padding:10px;  
-        margin:10px;
-    }
-}
-
-
-@media (max-width: 599px) {
-    .restaurant-box {
-        width: 100%; /* 화면이 좁을 때 1열로 변경 */
-    }
-}
-
-
-
-
 
 .post-title {
     font-size: 1.5em; /* 제목 크기 키우기 */
@@ -207,12 +176,12 @@ nav button:hover {
     border-radius: 4px;
 }
 footer {
-    font-size: 12px;
     text-align: center;
+    background-color: white;
     color: rgb(171, 171, 171);
-    margin-top: auto;
+    margin-top: auto; /* 화면 하단 고정 */
+    font-size: 12px;
 }
-
 .popup {
     display: none;
     position: fixed;
@@ -274,4 +243,68 @@ footer {
     gap: 10px; /* 버튼 간 간격 추가 */
 }
 
+@media (max-width: 768px) {
+    .restaurant-box {
+        width: calc(100% - 40px); /* 작은 화면에서 1열로 변경 */
+    }
+    #home-title img {
+        width: 60px; /* 이미지의 너비를 100px로 설정 */
+        height: auto; /* 높이는 비율에 맞춰 자동 조정 */
+    }
+    #home-title span {
+        font-size: 18px; /* Adjust font size as needed */
+        padding: 0;
+        color: black; /* Set text color */
+    }
+    
+    .auth-buttons {
+        text-align: right;
+    }
+    
+    nav button {
+        margin: 0px;
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+    nav > button:nth-child(1),
+    nav > button:nth-child(2) {
+        margin: 10px 30px;
+        font-size: 16px;
+    }
+}
+
+
+@media (max-width: 599px) {
+    .restaurant-box {
+        width: 100%; /* 화면이 좁을 때 1열로 변경 */
+    }
+    .popup-content {
+        width: 90%; /* 팝업 너비를 화면의 90%로 설정 */
+        padding: 10px; /* 내부 여백 줄임 */
+    }
+
+    .popup-content button {
+        font-size: 12px; /* 버튼 글씨 크기 줄임 */
+        padding: 5px 10px; /* 버튼 내부 여백 축소 */
+        margin: 5px; /* 버튼 간 간격 조정 */
+        width: auto; /* 내용에 맞게 버튼 너비 조정 */
+    }
+
+    .time-slot-button {
+        width: 25%; /* 버튼 크기를 화면의 25%로 설정 */
+        padding: 8px; /* 내부 여백 조정 */
+        margin: 5px; /* 버튼 간 간격 유지 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+    }
+
+    .button-row {
+        display: flex;
+        flex-wrap: wrap; /* 버튼이 줄바꿈되도록 설정 */
+        justify-content: space-around; /* 버튼 간격 균등 분배 */
+        gap: 5px; /* 버튼 간의 간격 설정 */
+    }
+    #datetime {
+        display:none;
+    }
+}
 

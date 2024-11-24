@@ -25,55 +25,29 @@
                 <button onclick="goToMyPage()">마이페이지</button>  
                 <button onclick="logout()">로그아웃</button>
             </div>
+        </nav> <!-- 여기 nav 닫는 태그 추가 -->
         <div id="datetime"></div>
     </header>
-
     <section id="restaurant-section">
         <div class="restaurant-box" onclick="openPopup(1)">
             <h2>명진당</h2>
             <!-- <img src="menu1.jpg" alt="명진당 메뉴사진"> -->
-            <h3>오늘의 메뉴</h3>
-            <p>기사식당돼지불백<br>
-                김치우동장국<br>
-                동그랑땡*케찹<br>
-                고추장아찌<br>
-                배추김치*쌀밥<br>
-                요구르트<br>
-            </p>
+            <p class="menu-info"></p>
         </div>
         <div class="restaurant-box" onclick="openPopup(2)">
             <h2>학생회관</h2>
             <!-- <img src="menu2.jpg" alt="학생회관 메뉴사진"> -->
-            <h3>오늘의 메뉴</h3>
-            <p>
-                불맛나가사끼짬뽕
-            </p>
+            <p class="menu-info"></p>
         </div>
         <div class="restaurant-box" onclick="openPopup(3)">
             <h2>교직원 식당</h2>
             <!-- <img src="menu3.jpg" alt="교직원식당 메뉴사진"> -->
-            <h3>오늘의 메뉴</h3>
-            <p>제육볶음<br>
-                잡곡밥/쌀밥<br>
-                미역국<br>
-                고구마맛탕<br>
-                콩나물무침<br>
-                깍두기<br>
-                샐러드&드레싱<br>
-                요구르트<br>
-            </p>
+            <p class="menu-info"></p>
         </div>
         <div class="restaurant-box" onclick="openPopup(4)">
             <h2>복지동 식당</h2>
             <!-- <img src="menu4.jpg" alt="복지동 메뉴사진"> -->
-            <h3>오늘의 메뉴</h3>
-            <p> 김치돈육조림<br>
-                백미밥<br>
-                미역국<br>
-                메추리알곤조림<br>
-                고사리나물<br>
-                깍두기<br>
-            </p>
+            <p class="menu-info"></p>
         </div>
     </section>
 
@@ -96,6 +70,6 @@
     <!-- Chart.js 라이브러리 포함 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom JavaScript -->
-    <script src="js/index.js"></script>
+    <script type="module" src="js/index.js"></script>
 </body>
 </html>

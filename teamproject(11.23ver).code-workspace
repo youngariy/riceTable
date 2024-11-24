@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../영범님/11_24버전"
+		},
+		{
+			"path": "../../원태님/rice/riceTable"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501
+	}
+}

@@ -71,7 +71,7 @@ function navigateToBoard(boardId) {
 window.onload = function() {
     getUserProfile();
     navigateToBoard(currentBoard);
-
+    
     // 정렬 버튼 클릭 이벤트 리스너 추가
     document.getElementById('sortBtn').addEventListener('click', function() {
         const sortSelect = document.getElementById('sortOptions');
@@ -494,7 +494,6 @@ function filterPosts() {
     // 현재의 정렬 기준에 따라 정렬
     sortAndDisplayPosts(matchedPosts);
 }
-
 
 
 //해시테이블 추가전
