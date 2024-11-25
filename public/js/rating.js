@@ -3,8 +3,8 @@ let currentBoard = 1;
 const boards = {
     1: '명진당',
     2: '학생회관',
-    3: '교직원 식당',
-    4: '복지동식당'
+    3: '복지동 식당',
+    4: '교직원 식당'
 };
 
 const postList = document.getElementById('postList');

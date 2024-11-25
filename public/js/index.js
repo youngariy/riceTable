@@ -212,50 +212,62 @@ function openPopup(restaurantId) {
 }
 
 function submitResponse() {
-   const selectedButton = document.querySelector('.time-slot-button.selected');
-   if (!selectedButton) {
-       alert('시간대를 선택해주세요.');
-       return;
-   }
-   const timeSlot = selectedButton.dataset.value;
+    const isLoggedIn = getCookie('isLoggedIn');
+    if (isLoggedIn !== 'true') {
+        alert('로그인 후 이용할 수 있습니다.');
+        window.location.href = '/login.html';
+        return; // 함수 종료
+    }
 
-   const confirmVote = confirm('하루에 한번만 투표할 수 있습니다. 투표하시겠습니까?');
-   if (!confirmVote) {
-       return;
-   }
+    const selectedButton = document.querySelector('.time-slot-button.selected');
+    if (!selectedButton) {
+        alert('시간대를 선택해주세요.');
+        return;
+    }
+    const timeSlot = selectedButton.dataset.value;
 
-   const dateStr = getTodayDateString();
+    const confirmVote = confirm('하루에 한번만 투표할 수 있습니다. 투표하시겠습니까?');
+    if (!confirmVote) {
+        return;
+    }
 
-   fetch('/api/surveys/vote', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       credentials: 'include',
-       body: JSON.stringify({
-           restaurantId: currentRestaurantId,
-           date: dateStr,
-           timeSlot: timeSlot
-       })
-   })
-   .then(response => {
-       if (!response.ok) {
-           if (response.status === 400) {
-               return response.json().then(data => {
-                   alert(data.message);
-               });
-           }
-           throw new Error(`HTTP error! status: ${response.status}`);
-       }
-       return response.json();
-   })
-   .then(data => {
-       updateVoteCount(data);
-       closePopup();
-       alert('투표가 완료되었습니다.')
-   })
-   .catch(error => {
-       console.error('투표 저장 중 오류 발생:', error);
-       alert('투표 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-   });
+    const dateStr = getTodayDateString();
+
+    fetch('/api/surveys/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+            restaurantId: currentRestaurantId,
+            date: dateStr,
+            timeSlot: timeSlot
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 400) {
+                return response.json().then(data => {
+                    alert(data.message);
+                });
+            } else if (response.status === 401) {
+                // 로그인 필요 응답 처리
+                alert('로그인 후 이용할 수 있습니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        updateVoteCount(data);
+        closePopup();
+        alert('투표가 완료되었습니다.');
+    })
+    .catch(error => {
+        console.error('투표 저장 중 오류 발생:', error);
+        alert('투표 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+    });
 }
 
 function updateVoteCount(data) {
