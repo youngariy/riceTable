@@ -152,7 +152,6 @@ exports.dislikeRating = async (req, res) => {
     }
 };
 
-
 // 평균 별점 계산
 exports.getAverageRating = async (req, res) => {
     try {
@@ -177,32 +176,35 @@ exports.getAverageRating = async (req, res) => {
 };
 
 
-//백업
-// // controllers/ratingController.js
-// const Rating = require('../models/ratingModel');
-// const UserVote = require('../models/UserVote'); // 필요한 경우 투표 제한을 위해 사용
 
-// // 게시글 생성
-// exports.createRating = async (req, res) => {
-//     const { title, content, rating, board } = req.body;
 
+
+
+// // 평균 별점 계산
+// exports.getAverageRating = async (req, res) => {
 //     try {
-//         const newRating = new Rating({
-//             title,
-//             content,
-//             rating,
-//             board,
-//             authorId: req.user._id,       // 로그인된 사용자의 ID
-//             authorName: req.user.name      // 로그인된 사용자의 이름
-//         });
+//         const board = req.query.board;
+//         const average = await Rating.aggregate([
+//             { $match: { board: Number(board) } },
+//             {
+//                 $group: {
+//                     _id: null,
+//                     averageRating: { $avg: "$rating" }
+//                 }
+//             }
+//         ]);
 
-//         const savedRating = await newRating.save();
-//         res.status(201).json(savedRating);
+//         const avgRating = average.length > 0 ? average[0].averageRating : 0;
+
+//         res.json({ averageRating: avgRating });
 //     } catch (error) {
-//         console.error('평가 생성 오류:', error);
-//         res.status(500).json({ message: '평가 생성 중 오류가 발생했습니다.' });
+//         console.error('평균 별점 계산 오류:', error);
+//         res.status(500).json({ message: '평균 별점 계산 중 오류가 발생했습니다.' });
 //     }
 // };
+
+
+
 
 // // 평가 목록 조회
 // exports.getRatings = async (req, res) => {

@@ -390,3 +390,89 @@ function logout() {
    alert("로그아웃 되었습니다!");
    location.reload();
 }
+
+
+// 고정된 별점을 저장하는 객체
+const fixedRatings = {
+    '5': 4.7, // menuId가 '5'인 메뉴는 별점 4.7로 고정
+    '6': 4.5,  // 필요에 따라 다른 메뉴도 추가
+    '7': 3.8,
+    '8': 4.1
+};
+
+async function fetchAndDisplayAverageRatings() {
+    const menuItems = document.querySelectorAll('.menu-item');
+    const menuDataArray = [];
+
+    // 각 메뉴 아이템에 대한 평균 별점을 가져옵니다.
+    for (let menuItem of menuItems) {
+        const menuId = menuItem.getAttribute('data-menu-id');
+        let avgRating;
+
+        // 고정된 별점이 있는지 확인
+        if (fixedRatings.hasOwnProperty(menuId)) {
+            avgRating = fixedRatings[menuId];
+        } else {
+            // 서버에서 평균 별점을 가져옵니다.
+            try {
+                const response = await fetch(`/api/ratings/average?board=${menuId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                avgRating = data.averageRating || 0; // 평균 별점이 없을 경우 0으로 설정
+            } catch (error) {
+                console.error('평균 별점 로드 중 오류 발생:', error);
+                avgRating = 0;
+            }
+        }
+
+        // 메뉴 데이터와 평균 별점을 배열에 저장
+        menuDataArray.push({
+            menuItem: menuItem,
+            avgRating: avgRating
+        });
+    }
+
+    // 평균 별점을 기준으로 내림차순 정렬
+    menuDataArray.sort((a, b) => b.avgRating - a.avgRating);
+
+    // 정렬된 메뉴를 DOM에 다시 추가
+    const menuList = document.getElementById('menuList');
+    menuList.innerHTML = ''; // 기존 메뉴 아이템 제거
+
+    menuDataArray.forEach((data, index) => {
+        const menuItem = data.menuItem;
+        const avgRating = data.avgRating;
+
+        // 순위에 맞게 rank-badge 업데이트
+        const rankBadge = menuItem.querySelector('.rank-badge');
+        rankBadge.textContent = index + 1; // 순위 번호 (1부터 시작)
+        rankBadge.className = 'rank-badge'; // 기존 클래스 초기화
+
+        // 순위에 따라 rank-badge 클래스 추가
+        if (index === 0) {
+            rankBadge.classList.add('rank-1');
+        } else if (index === 1) {
+            rankBadge.classList.add('rank-2');
+        } else if (index === 2) {
+            rankBadge.classList.add('rank-3');
+        } else {
+            rankBadge.classList.add('rank-4');
+        }
+
+        // 평균 별점 표시 업데이트
+        const avgRatingElement = menuItem.querySelector('.star-rating');
+        if (avgRatingElement) {
+            avgRatingElement.textContent = `★ ${avgRating.toFixed(1)}`;
+        }
+
+        // 메뉴 리스트에 메뉴 아이템 추가
+        menuList.appendChild(menuItem);
+    });
+}
+
+// 페이지 로드 시 함수 호출
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAndDisplayAverageRatings();
+});
