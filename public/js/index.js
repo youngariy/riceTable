@@ -266,7 +266,6 @@ function submitResponse() {
     })
     .catch(error => {
         console.error('투표 저장 중 오류 발생:', error);
-        alert('투표 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
     });
 }
 

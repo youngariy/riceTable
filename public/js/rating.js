@@ -75,7 +75,6 @@ async function getUserProfile() {
         const data = await response.json();
         if (data.success) {
             currentUser = data.user;
-            console.log('현재 사용자 정보:', currentUser); // 디버깅용 로그
         } else {
             alert('로그인이 필요합니다.');
             window.location.href = '/login.html';
@@ -101,10 +100,14 @@ window.onload = function() {
     })();
 };
 
+
+
+// 평가 작성 버튼 클릭 시: 제한 없이 모달만 띄움
 document.getElementById('newPostBtn').onclick = function () {
     postModal.style.display = 'block';
     postForm.reset();
 
+    // 메뉴 설명 표시
     const menuDescriptions = {
         1: "명진당 메뉴: 기사식당돼지불백",
         2: "학생회관 메뉴: 불맛나가사끼짬뽕",
@@ -142,8 +145,35 @@ function closeModal() {
     postModal.style.display = 'none';
 }
 
+// 업로드 버튼 클릭 시 평가 가능 여부 확인 및 데이터 전송
 postForm.onsubmit = async function (event) {
-    event.preventDefault();
+    event.preventDefault(); // 폼 기본 동작 방지
+
+    // 확인 창 띄우기
+    const confirmSubmit = confirm('하루에 한번만 평가할 수 있습니다. 제출하시겠습니까?');
+    if (!confirmSubmit) {
+        return; // 사용자가 취소를 선택하면 진행 중단
+    }
+
+    // 평가 가능 여부 확인
+    try {
+        const response = await fetch(`/api/ratings/checkUserRatingToday?board=${currentBoard}`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (data.hasSubmittedToday) {
+            alert('하루에 한번씩만 평가할 수 있습니다.');
+            return; // 작성 중단
+        }
+    } catch (error) {
+        console.error('사용자 평가 확인 중 오류 발생:', error);
+        alert('오류가 발생했습니다. 다시 시도해 주세요.');
+        return;
+    }
+
+    // 평가 데이터 전송
     const content = document.getElementById('content').value;
     const ratingValue = 6 - parseInt(document.querySelector('input[name="rating"]:checked').value);
 
@@ -160,11 +190,10 @@ postForm.onsubmit = async function (event) {
         content, 
         rating: ratingValue, // 숫자로 저장
         board: currentBoard
-        // 작성자 정보는 서버에서 처리
     };
 
     try {
-        const response = await fetch('/api/ratings', {
+        const uploadResponse = await fetch('/api/ratings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -172,16 +201,18 @@ postForm.onsubmit = async function (event) {
             body: JSON.stringify(post),
             credentials: 'include' // 인증 정보를 포함하여 요청
         });
-        if (response.ok) {
+
+        if (uploadResponse.ok) {
+            alert('평가가 성공적으로 업로드되었습니다.');
             closeModal();
             loadPosts();
         } else {
-            const errorData = await response.json();
+            const errorData = await uploadResponse.json();
             alert(errorData.message || '게시글 작성 중 오류가 발생했습니다.');
         }
     } catch (error) {
         console.error('게시글 작성 중 오류 발생:', error);
-        alert('게시글 작성 중 오류가 발생했습니다. 다시 시도해주세요.');
+        alert('게시글 작성 중 오류가 발생했습니다. 다시 시도해 주세요.');
     }
     getAverageRating(); // 평균 별점 가져오기
 };
@@ -210,8 +241,6 @@ async function loadPosts() {
             posts = quickSort(posts, (a, b) => new Date(b.date) - new Date(a.date));
         }
         posts.forEach((post) => {
-            console.log('게시글 정보:', post); // 디버깅용 로그
-
             const postDate = new Date(post.date);
             const formattedDate = `${postDate.getFullYear()}-${String(postDate.getMonth() + 1).padStart(2, '0')}-${String(postDate.getDate()).padStart(2, '0')}`;
 

@@ -2,18 +2,38 @@
 const Rating = require('../models/ratingModel');
 const UserVote = require('../models/UserVote'); // 필요한 경우 투표 제한을 위해 사용
 
-// 게시글 생성
+// 평가 생성
 exports.createRating = async (req, res) => {
     const { title, content, rating, board } = req.body;
 
     try {
+        // 사용자가 오늘 해당 보드에 이미 평가를 작성했는지 확인
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
+        const endOfToday = new Date(startOfToday);
+        endOfToday.setDate(endOfToday.getDate() + 1);
+
+        const existingRating = await Rating.findOne({
+            authorId: req.user._id,
+            board: board,
+            date: {
+                $gte: startOfToday,
+                $lt: endOfToday
+            }
+        });
+
+        if (existingRating) {
+            return res.status(400).json({ message: '이미 평가하셨습니다.' });
+        }
+
         const newRating = new Rating({
             title,
             content,
             rating,
             board,
-            authorId: req.user._id,       // 로그인된 사용자의 ID
-            authorName: req.user.name      // 로그인된 사용자의 이름
+            authorId: req.user._id,
+            authorName: req.user.name
         });
 
         const savedRating = await newRating.save();
@@ -23,6 +43,7 @@ exports.createRating = async (req, res) => {
         res.status(500).json({ message: '평가 생성 중 오류가 발생했습니다.' });
     }
 };
+
 
 // 평가 목록 조회
 exports.getRatings = async (req, res) => {
@@ -175,7 +196,37 @@ exports.getAverageRating = async (req, res) => {
     }
 };
 
+// 사용자가 오늘 해당 보드에 평가를 작성했는지 확인하는 엔드포인트
+exports.checkUserRatingToday = async (req, res) => {
+    try {
+        const board = req.query.board;
+        const userId = req.user._id;
 
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
+        const endOfToday = new Date(startOfToday);
+        endOfToday.setDate(endOfToday.getDate() + 1);
+
+        const existingRating = await Rating.findOne({
+            authorId: userId,
+            board: board,
+            date: {
+                $gte: startOfToday,
+                $lt: endOfToday
+            }
+        });
+
+        if (existingRating) {
+            return res.json({ hasSubmittedToday: true });
+        } else {
+            return res.json({ hasSubmittedToday: false });
+        }
+    } catch (error) {
+        console.error('사용자 평가 확인 오류:', error);
+        res.status(500).json({ message: '사용자 평가 확인 중 오류가 발생했습니다.' });
+    }
+};
 
 
 
