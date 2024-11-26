@@ -127,6 +127,12 @@ document.getElementById('newPostBtn').onclick = function () {
     ratingDiv.insertAdjacentElement('beforebegin', menuElement);
 };
 
+// 시간 출력 함수
+document.addEventListener("DOMContentLoaded", function() {
+    updateDateTime();
+    setInterval(updateDateTime, 1000);  // 실시간 날짜/시간 업데이트
+});
+
 function updateDateTime() {
     const now = new Date();
     const options = { 
