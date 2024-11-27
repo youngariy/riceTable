@@ -311,28 +311,42 @@ footer {
 .menu-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin: 15px 0;
     font-family: 'Noto Sans KR', sans-serif;
+    table-layout: fixed; /* 열 크기 고정 */
 }
 
-.menu-table th, .menu-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.menu-table th {
+.menu-table th:first-child {
+    width: 20% !important; /* 첫 번째 열 너비 */
     background-color: #f8f9fa;
     font-weight: bold;
     color: #333;
 }
 
-.menu-table tr:last-child td {
-    border-bottom: none;
+.menu-table td:first-child {
+    width: 20% !important; /* 첫 번째 열 너비 */
+}
+
+.menu-table th:last-child {
+    width: 80% !important; /* 두 번째 열 너비 */
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.menu-table td:last-child {
+    width: 80% !important; /* 두 번째 열 너비 */
+}
+
+.menu-table th, .menu-table td {
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
 }
 
 .menu-price {
-    color: #e74c3c;
+    color: #e74c3c !important;
     font-weight: bold;
 }
 

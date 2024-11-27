@@ -102,48 +102,49 @@ function updateMenuDisplay(menus) {
         const menuInfo = box.querySelector('.menu-info');
         if (!menuInfo) return;
 
+        // 레스토랑 키 매핑
         const restaurantKey = ['myungJinDang', 'studentHall', 'facultyHall', 'welfare'][index];
         const menu = menus[restaurantKey];
 
+        // 메뉴 정보가 있을 경우
         if (menu) {
-            // 테이블 형식으로 메뉴 정보 표시
             menuInfo.innerHTML = `
-                <table class="menu-table">
-                    <thead>
-                        <tr>
-                            <th>구분</th>
-                            <th>내용</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>메인메뉴</td>
-                            <td>${menu.name}</td>
-                        </tr>
-                        <tr>
-                            <td>가격</td>
-                            <td class="menu-price">${menu.price.toLocaleString()}원</td>
-                        </tr>
-                        ${menu.sideDishes.length > 0 ? `
-                        <tr>
-                            <td>반찬</td>
-                            <td class="menu-sidedish">${menu.sideDishes.join(', ')}</td>
-                        </tr>
-                        ` : ''}
-                    </tbody>
-                </table>
-            `;
+            <table class="menu-table">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>메인메뉴</td>
+                        <td>${menu.name}</td>
+                    </tr>
+                    <tr>
+                        <td>가격</td>
+                        <td class="menu-price">${menu.price.toLocaleString()}원</td>
+                    </tr>
+                    ${menu.sideDishes && menu.sideDishes.length > 0 ? `
+                    <tr>
+                        <td>반찬</td>
+                        <td class="menu-sidedish">${menu.sideDishes.join(', ')}</td>
+                    </tr>` : ''}
+                </tbody>
+            </table>
+        `;
         } else {
             menuInfo.innerHTML = `
                 <table class="menu-table">
                     <tr>
-                        <td style="text-align: center;">오늘의 메뉴가 없습니다</td>
+                        <td colspan="2" style="text-align: center;">오늘의 메뉴가 없습니다</td>
                     </tr>
                 </table>
             `;
         }
     });
 }
+
 
 // 실시간 날짜/시간 업데이트
 function updateDateTime() {
