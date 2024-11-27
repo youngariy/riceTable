@@ -37,22 +37,47 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!name || !studentId || !email || !userid || !password) {
     // 누락된 필드가 있는 경우 400 상태 코드와 함께 메시지를 반환
     return res.status(400).json({ message: "필드를 정확히 입력하세요." });
-}
+  }
+
   if (validationErrors.length > 0) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
       message: validationErrors.join(", ")
     });
   }
 
   try {
-    let user = await User.findOne({ $or: [{ userid }, { email }, { studentId }] });
-    if (user) {
-      return res.status(400).json({ message: "이미 등록된 아이디, 이메일 또는 학번입니다." });
+    // 중복 필드를 저장할 배열 초기화
+    let duplicateFields = [];
+
+    // 학번 중복 체크
+    const existingStudentId = await User.findOne({ studentId });
+    if (existingStudentId) {
+      duplicateFields.push("이미 등록된 학번입니다.\n");
+    }
+
+    // 이메일 중복 체크
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      duplicateFields.push("이미 등록된 이메일입니다.\n");
+    }
+
+    // 아이디 중복 체크
+    const existingUserid = await User.findOne({ userid });
+    if (existingUserid) {
+      duplicateFields.push("이미 등록된 아이디입니다.\n");
+    }
+
+    // 중복된 필드가 있는 경우 메시지 반환
+    if (duplicateFields.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: duplicateFields.join(" ")
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = await User.create({
+    const user = await User.create({
       name,
       studentId,
       email,
@@ -68,19 +93,14 @@ const registerUser = asyncHandler(async (req, res) => {
       message: '회원가입이 완료되었습니다.'
     });
   } catch (error) {
-    // 중복 키 오류 처리
-    if (error.code === 11000) {
-      const duplicateKey = Object.keys(error.keyPattern)[0]; // 중복된 필드명 가져오기
-      const errorMessage = `${duplicateKey} 필드가 이미 사용 중입니다. 다른 값을 입력해 주세요.`;
-      return res.status(400).json({ success: false, message: errorMessage });
-  }
-    console.error("Server Error:", error); // 구체적인 서버 오류 출력
+    // 기타 서버 오류 처리
+    console.error("Server Error:", error);
     res.status(500).json({
       success: false,
       message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
     });
   }
-}); 
+});
 
 
 
